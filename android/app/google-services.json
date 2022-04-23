@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "293006696968",
+    "project_id": "lc-mynotes",
+    "storage_bucket": "lc-mynotes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:293006696968:android:00244997e599a6f615e7bd",
+        "android_client_info": {
+          "package_name": "dev.lonniecoffman.mynotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "293006696968-0qon2ve7f9r0722m50eqg4gj7irfddh2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjdNzuhybE9p1CVKMPf4q6bIG2g6Bq37E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "293006696968-0qon2ve7f9r0722m50eqg4gj7irfddh2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
