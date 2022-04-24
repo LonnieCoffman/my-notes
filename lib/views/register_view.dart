@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
 
 import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/utilities/show_error_dialog.dart';
@@ -58,41 +57,42 @@ class _RegisterViewState extends State<RegisterView> {
               final email = _email.text;
               final password = _password.text;
               try {
-                final userCredential =
-                    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                await FirebaseAuth.instance.createUserWithEmailAndPassword(
                   email: email,
                   password: password,
                 );
-                devtools.log(userCredential.toString());
+                final user = FirebaseAuth.instance.currentUser;
+                await user?.sendEmailVerification();
+                Navigator.of(context).pushNamed(verifyEmailRoute);
               } on FirebaseAuthException catch (e) {
                 switch (e.code) {
                   case 'invalid-email':
-                    showErrorDialog(
+                    await showErrorDialog(
                       context,
                       'invalid email address',
                     );
                     break;
                   case 'weak-password':
-                    showErrorDialog(
+                    await showErrorDialog(
                       context,
                       'password must be at least 6 characters',
                     );
                     break;
                   case 'email-already-in-use':
-                    showErrorDialog(
+                    await showErrorDialog(
                       context,
                       'email already in use',
                     );
                     break;
                   default:
-                    showErrorDialog(
+                    await showErrorDialog(
                       context,
                       e.message.toString(),
                     );
                     break;
                 }
               } on Exception catch (e) {
-                showErrorDialog(
+                await showErrorDialog(
                   context,
                   e.toString(),
                 );
