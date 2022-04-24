@@ -1,5 +1,3 @@
-import 'dart:developer' as devtools show log;
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,12 +12,13 @@ void main() {
   runApp(MaterialApp(
     title: 'MyNotes',
     theme: ThemeData(
-      primarySwatch: Colors.blue,
+      primarySwatch: Colors.blueGrey,
     ),
     home: const HomePage(),
     routes: {
-      '/login': (context) => const LoginView(),
-      '/register': (context) => const RegisterView(),
+      '/notes/': (context) => const NotesView(),
+      '/login/': (context) => const LoginView(),
+      '/register/': (context) => const RegisterView(),
     },
   ));
 }
@@ -78,7 +77,7 @@ class _NotesViewState extends State<NotesView> {
                   if (shouldLogout) {
                     await FirebaseAuth.instance.signOut();
                     Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/login',
+                      '/login/',
                       (_) => false,
                     );
                   }
