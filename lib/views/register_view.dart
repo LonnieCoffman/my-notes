@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:mynotes/constants/routes.dart';
+import 'package:mynotes/services/auth/auth_exceptions.dart';
+import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/utilities/show_error_dialog.dart';
 
 class RegisterView extends StatefulWidget {
@@ -57,44 +57,31 @@ class _RegisterViewState extends State<RegisterView> {
               final email = _email.text;
               final password = _password.text;
               try {
-                await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                await AuthService.firebase().createUser(
                   email: email,
                   password: password,
                 );
-                final user = FirebaseAuth.instance.currentUser;
-                await user?.sendEmailVerification();
+                await AuthService.firebase().sendEmailVerification();
                 Navigator.of(context).pushNamed(verifyEmailRoute);
-              } on FirebaseAuthException catch (e) {
-                switch (e.code) {
-                  case 'invalid-email':
-                    await showErrorDialog(
-                      context,
-                      'invalid email address',
-                    );
-                    break;
-                  case 'weak-password':
-                    await showErrorDialog(
-                      context,
-                      'password must be at least 6 characters',
-                    );
-                    break;
-                  case 'email-already-in-use':
-                    await showErrorDialog(
-                      context,
-                      'email already in use',
-                    );
-                    break;
-                  default:
-                    await showErrorDialog(
-                      context,
-                      e.message.toString(),
-                    );
-                    break;
-                }
-              } on Exception catch (e) {
+              } on WeakPasswordAuthException {
                 await showErrorDialog(
                   context,
-                  e.toString(),
+                  'password must be at least 6 characters',
+                );
+              } on InvalidEmailAuthException {
+                await showErrorDialog(
+                  context,
+                  'invalid email address',
+                );
+              } on EmailAlreadyInUseAuthException {
+                await showErrorDialog(
+                  context,
+                  'email already in use',
+                );
+              } on GenericAuthException {
+                await showErrorDialog(
+                  context,
+                  'failed to register',
                 );
               }
             },
